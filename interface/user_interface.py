@@ -2,7 +2,8 @@
 用户相关接口
 '''
 from db import db_hander
-def register_interface(username,password,balance=0,is_admin=False):
+
+def register_interface(username, password, balance=0, is_admin=False):
     '''
     注册接口
     :param username:
@@ -31,4 +32,22 @@ def register_interface(username,password,balance=0,is_admin=False):
         return True,f'{username} 注册成功！'
 
 
-def login_inerface(username):
+def login_inerface(username,password):
+    '''
+    登录接口
+    :param username:
+    :param password:
+    :return:
+    '''
+    #1 查看用户是否存在 需要返回数据data 判断用户名和密码是否匹配
+    user_data = db_hander.select_data(username)
+    #1.1 用户不存在
+    if not user_data:
+        return False, f'{username} 用户数据不存在,请重新输入', False
+    #1.2 用户存在
+    if not password == user_data['password']:
+        return False, f'{username} 用户密码输入有误,请重新输入！', False
+    if user_data['locked']:
+        return False, f'{username} 用户被冻结了！'
+    return True, f'{username} 登录成功！',user_data['is_admin']
+

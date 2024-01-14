@@ -5,17 +5,23 @@ import os
 from  conf import settings
 import json
 
-def select_data(username,data=True):
+def select_data(username,data=True,is_user=True):
     '''
 
     :param username:
     :param data:  如果需要用户数据 data就不用户传值，如果不需要data就传Falue
     :return:
     '''
+    #查询用户数据
+    if is_user:
     #1、接收接口层过来的username 并拼接用户名.json
-    user_path = os.path.join(
-        settings.USER_DATA_DIR, f'{username}.json'
-    )
+        user_path = os.path.join(
+            settings.USER_DATA_DIR, f'{username}.json'
+        )
+    else:
+        user_path = os.path.join(
+            settings.GOODS_DATA_DIR, f'{username}.json'
+        )
     #2、判断用户是否存在
     #2.1 用户不存在
     if not os.path.exists(user_path):
